@@ -1,0 +1,5 @@
+package br.org.generation.objetivos.controller;
+
+public class ObjetivosController {
+
+}
