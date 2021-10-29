@@ -11,8 +11,8 @@ public class SkillsController {
 	@GetMapping
 	public String Skills() {
 		return "Habilidades e Mentalidades:"
-				+ "\n - Peresistência;"
-				+ "\n - Atenção aos Detalhes;"
-				+ "\n - Mentalidaade de Crescimento;";
+				+ "<p> - Peresistência;"
+				+ "<p> - Atenção aos Detalhes;"
+				+ "<p> - Mentalidade de Crescimento;";
 	}
 }

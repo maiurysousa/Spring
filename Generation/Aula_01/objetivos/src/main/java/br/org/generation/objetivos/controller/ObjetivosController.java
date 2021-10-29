@@ -11,9 +11,9 @@ public class ObjetivosController {
 	@GetMapping
 	public String objetivosSemana() {
 		return "Meus objetivos de aprendizagem para essa semana:"
-				+ "\n - Mais JAVA;"
-				+ "\n - Spring;"
-				+ "\n - Mais atenção aos detalhes;"
-				+ "\n - Organização.";
+				+ "<p> - Mais JAVA;"
+				+ "<p> - Spring;"
+				+ "<p> - Mais atenção aos detalhes;"
+				+ "<p> - Organização.";
 	}
 }
