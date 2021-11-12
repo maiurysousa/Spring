@@ -25,7 +25,7 @@ import br.org.generation.farmacia.repository.CategoriaRepository;
 @RequestMapping("/categorias") //Endereço da requisição
 public class CategoriaController {
 	
-	@Autowired
+	@Autowired // injeção de dependências
 	private CategoriaRepository categoriaRepository;
 	
 	@GetMapping
@@ -36,7 +36,7 @@ public class CategoriaController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Categoria> getById(@PathVariable long id){
 		return categoriaRepository.findById(id)
-				.map(resp -> ResponseEntity.ok(resp))
+				.map(resposta -> ResponseEntity.ok(resposta))
 				.orElse(ResponseEntity.notFound().build());
 	}
 	
