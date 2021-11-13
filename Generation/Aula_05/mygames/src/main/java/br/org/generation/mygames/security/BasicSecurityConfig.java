@@ -41,10 +41,10 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		 auth.userDetailsService(userDetailsService);
 
-		 auth.inMemoryAuthentication()
+		/* auth.inMemoryAuthentication()
 			.withUser("root")
 			.password(passwordEncoder().encode("root"))
-			.authorities("ROLE_USER");
+			.authorities("ROLE_USER");*/
 		 
 			/**
 			 *  O objeto auth registra e cria uma nova instância do objeto userDetailsService

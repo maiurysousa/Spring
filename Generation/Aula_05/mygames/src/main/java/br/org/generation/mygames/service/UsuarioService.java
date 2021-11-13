@@ -2,6 +2,7 @@ package br.org.generation.mygames.service;
 
 import java.nio.charset.Charset;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Optional;
 
 import org.apache.commons.codec.binary.Base64;
@@ -21,50 +22,48 @@ public class UsuarioService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
-	
 	public Optional<Usuario> cadastrarUsuario(Usuario usuario) {
-
-		if (usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent())
-			return Optional.empty();
+		
+		if(usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent())
+			throw new ResponseStatusException(
+					HttpStatus.BAD_REQUEST, "O Usuário já existe!", null);
+		
+		if (calcularIdade(usuario.getDataNascimento()) < 18) 
+			throw new ResponseStatusException(
+					HttpStatus.BAD_REQUEST, "O Usuário é menor de idade!", null);
 		
 		usuario.setSenha(criptografarSenha(usuario.getSenha()));
-
 		return Optional.of(usuarioRepository.save(usuario));
-	
 	}
 
+	
 	public Optional<Usuario> atualizarUsuario(Usuario usuario) {
 
 		if (usuarioRepository.findById(usuario.getId()).isPresent()) {
 			
-			 // Checa se o usuário (Não o Id) já existe antes de atualizar
-			
 			Optional<Usuario> buscaUsuario = usuarioRepository.findByUsuario(usuario.getUsuario());
 			
 			if( buscaUsuario.isPresent() ){
-
-				/**
-				 * Checa se o usuário (email) pertence ao mesmo usuário ou se pertence
-				 * a outro usuário através do Id.
-				 * 
-				 * Caso o usuário seja encontrado na atualização é preciso ter certeza
-				 * que ele não esteja cadastrado em outro usuário.
-				 */
-
 				if(buscaUsuario.get().getId() != usuario.getId())
-					throw new ResponseStatusException( //lançar uma exeção - uma mensagem de erro
-						HttpStatus.BAD_REQUEST, "O Usuário já existe!", null); //null vai eitar trazere informações desnecessárias, uma pilha de erros
+					throw new ResponseStatusException(
+						HttpStatus.BAD_REQUEST, "O Usuário já existe!", null);
 			}
-	
+			
+			if(calcularIdade(usuario.getDataNascimento()) <18) 
+				throw new ResponseStatusException(
+						HttpStatus.BAD_REQUEST, "O Usuário é menor de idade!", null);
+			
+			
 			usuario.setSenha(criptografarSenha(usuario.getSenha()));
-
+			
 			return Optional.of(usuarioRepository.save(usuario));
 		} 
 			
-		return Optional.empty();
-
+		throw new ResponseStatusException(
+					HttpStatus.NOT_FOUND, "Usuário não encontrado!", null);
 	}	
-
+	
+	//Método de login
 	public Optional<UsuarioLogin> autenticarUsuario(Optional<UsuarioLogin> usuarioLogin) {
 
 		Optional<Usuario> usuario = usuarioRepository.findByUsuario(usuarioLogin.get().getUsuario());
@@ -84,32 +83,37 @@ public class UsuarioService {
 			}
 		}	
 		
-		return Optional.empty();
-		
+		throw new ResponseStatusException(
+				HttpStatus.UNAUTHORIZED, "Usuário ou senha inválidos!", null);		
 	}
-
+	
+	//Método para criptografar a senha
 	private String criptografarSenha(String senha) {
 
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		
 		return encoder.encode(senha);
-
 	}
 	
+	//Método de verificação de senhas
 	private boolean compararSenhas(String senhaDigitada, String senhaBanco) {
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		
 		return encoder.matches(senhaDigitada, senhaBanco);
-
 	}
-
+	
+	//Método para gerar Token
 	private String gerarBasicToken(String usuario, String senha) {
 
 		String token = usuario + ":" + senha;
 		byte[] tokenBase64 = Base64.encodeBase64(token.getBytes(Charset.forName("US-ASCII")));
 		return "Basic " + new String(tokenBase64);
-
+	}
+	
+	//Método para calcular idade
+	private int calcularIdade(LocalDate dataNascimento) {
+		return Period.between(dataNascimento, LocalDate.now()).getYears();
 	}
 
 }
