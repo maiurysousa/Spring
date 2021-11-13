@@ -11,6 +11,10 @@ import br.org.generation.mygames.model.Usuario;
 
 public class UserDetailsImpl implements UserDetails {
 	private static final long serialVersionUID = 1L;
+	/* serialVersionUID é uma codificação hash que vai identificar 
+	 * todo o conteúdo da classe, caso qualquer conteúdo mude, o serialVersionUID
+	 * também muda identificando se a versão do objeto é compatível com a da classe
+	 * que serializou o mesmo realizando ainda o controle de versionamento de tal objeto*/
 
 	private String userName;
 	private String password;

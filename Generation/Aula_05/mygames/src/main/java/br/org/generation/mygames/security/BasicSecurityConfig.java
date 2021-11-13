@@ -20,7 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
-	@Autowired// insere uma Injeção de Dependência. 
+	@Autowired//Injeção de Dependência. 
 	private UserDetailsService userDetailsService;
 
 	 /*É preciso injetar um objeto da Interface UserDetailsService que será 
@@ -41,7 +41,7 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		 auth.userDetailsService(userDetailsService);
 
-		/* auth.inMemoryAuthentication()
+		 /* auth.inMemoryAuthentication()
 			.withUser("root")
 			.password(passwordEncoder().encode("root"))
 			.authorities("ROLE_USER");*/
@@ -70,11 +70,11 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 	 @Override
 	protected void configure(HttpSecurity http) throws Exception {
 		 
-		 
-		 /*	  Sobrecarrega (@Override) o segundo método Configure que é responsável por
+		 	/*	  Sobrecarrega (@Override) o segundo método Configure que é responsável por
 			 *  criar uma instância da Classe HttpSecurity, que permite configurar a 
 			 *  segurança baseada na web para solicitações http específicas (endpoints)
 			 */
+		 
 		http.authorizeRequests()
 			.antMatchers("/usuarios/logar").permitAll()
 			.antMatchers("/usuarios/cadastrar").permitAll()

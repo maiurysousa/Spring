@@ -33,22 +33,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Autowired
 	private UsuarioRepository userRepository;
 
-	/**
-	 * 
-	 * Sobrecarrega (@Override) o método loadUserByUsername.
+	/* Sobrecarrega (@Override) o método loadUserByUsername.
 	 * 
 	 * A implementação de autenticação chama o método loadUserByUsername(String username),
 	 * para obter os dados de um usuário com um determinado nome de usuário. 
 	 * O nome do usuário deve ser único. O usuário retornado por este método é um objeto
-	 * da classe UserDetailsImpl. 
-	 * 
+	 * da classe UserDetailsImpl.
 	 */
 
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
-		/**
-		 * Para buscar o usuário no Banco de dados, utilizaremos o método findByUsuario,
+		/* Para buscar o usuário no Banco de dados, utilizaremos o método findByUsuario,
 		 * que foi assinado na interface UsuarioRepository
 		 */
 		
@@ -60,8 +56,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	  
 		usuario.orElseThrow(() -> new UsernameNotFoundException(userName + " not found."));
 
-		/**
-		 * Retorna um objeto do tipo UserDetailsImpl criado com os dados recuperados do
+		/* Retorna um objeto do tipo UserDetailsImpl criado com os dados recuperados do
 		 * Banco de dados.
 		 * 
 		 * O operador :: faz parte de uma expressão que referencia um método, complementando
