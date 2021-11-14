@@ -59,7 +59,8 @@ public class ProdutoController {
 					return ResponseEntity.ok().body(produtoRepository.save(produto));
 				})
 				.orElse(ResponseEntity.notFound().build());
-				}
+	}
+	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteProduto(@PathVariable long id) {
 		return produtoRepository.findById(id) //retorna pelo id
